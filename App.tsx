@@ -6,6 +6,9 @@ import Navbar from './components/Navbar';
 import CourseCard from './components/CourseCard';
 import CourseDetail from './components/CourseDetail';
 import AdminModal from './components/AdminModal';
+import DomainsModal from './components/DomainsModal';
+
+const CATEGORIES_STORAGE_KEY = 'learntube_categories';
 
 const OWNER_AUTH_KEY = 'learntube_owner_auth';
 
@@ -73,14 +76,28 @@ const App: React.FC = () => {
     return saved ? JSON.parse(saved) : [];
   });
   
-  const [categories] = useState<Category[]>(INITIAL_CATEGORIES);
+  const [categories, setCategories] = useState<Category[]>(() => {
+    try {
+      const saved = localStorage.getItem(CATEGORIES_STORAGE_KEY);
+      return saved ? JSON.parse(saved) : INITIAL_CATEGORIES;
+    } catch {
+      return INITIAL_CATEGORIES;
+    }
+  });
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showArchived, setShowArchived] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<SortOption>('date');
+
+  useEffect(() => {
+    const t = setTimeout(() => setSearchQuery(searchInput.trim()), 300);
+    return () => clearTimeout(t);
+  }, [searchInput]);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [courseToEdit, setCourseToEdit] = useState<Course | null>(null);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [isDomainsModalOpen, setIsDomainsModalOpen] = useState(false);
   const [isOwner, setIsOwner] = useState(() => window.location.hash === '#/owner' && isOwnerAuthenticated());
   const [showOwnerLogin, setShowOwnerLogin] = useState(() => window.location.hash === '#/owner' && !isOwnerAuthenticated());
   const [ownerPasswordInput, setOwnerPasswordInput] = useState('');
@@ -137,13 +154,14 @@ const App: React.FC = () => {
   useEffect(() => {
     localStorage.setItem('learntube_courses', JSON.stringify(courses));
     localStorage.setItem('learntube_bookmarks', JSON.stringify(bookmarks));
+    localStorage.setItem(CATEGORIES_STORAGE_KEY, JSON.stringify(categories));
     
     if (selectedCourse) {
       const current = courses.find(c => c.id === selectedCourse.id);
       if (!current) setSelectedCourse(null);
       else if (JSON.stringify(current) !== JSON.stringify(selectedCourse)) setSelectedCourse(current);
     }
-  }, [courses, bookmarks, selectedCourse]);
+  }, [courses, bookmarks, categories, selectedCourse]);
 
   const processedCourses = useMemo(() => {
     let result = courses.filter(course => {
@@ -171,11 +189,17 @@ const App: React.FC = () => {
   };
 
   const handleAddOrUpdateCourse = (course: Course) => {
+    const categoryName = course.category?.trim();
+    if (categoryName && !categories.some(c => c.name === categoryName)) {
+      setCategories(prev => [...prev, { id: Date.now().toString(), name: categoryName, icon: '📁' }]);
+    }
     setCourses(prev => {
       const exists = prev.find(c => c.id === course.id);
       return exists ? prev.map(c => c.id === course.id ? course : c) : [course, ...prev];
     });
   };
+
+  const courseCountByCategory = (name: string) => courses.filter(c => c.category === name).length;
 
   const handleDeleteCourse = (id: string) => {
     setCourses(prev => prev.filter(c => c.id !== id));
@@ -252,7 +276,7 @@ const App: React.FC = () => {
         </div>
       )}
 
-      <Navbar onSearch={setSearchQuery} onAdminToggle={() => { setCourseToEdit(null); setIsAdminOpen(true); }} isOwner={isOwner} onOwnerLogout={handleOwnerLogout} />
+      <Navbar searchValue={searchInput} onSearchChange={setSearchInput} onAdminToggle={() => { setCourseToEdit(null); setIsAdminOpen(true); }} isOwner={isOwner} onOwnerLogout={handleOwnerLogout} />
 
       <main className="max-w-7xl mx-auto px-6 pt-40 pb-32">
         <div className="mb-24 flex flex-col md:flex-row justify-between items-start gap-12">
@@ -309,6 +333,14 @@ const App: React.FC = () => {
                 [ {cat.name.toUpperCase()} ]
               </button>
             ))}
+            {isOwner && (
+              <button
+                onClick={() => setIsDomainsModalOpen(true)}
+                className="mono text-[11px] tracking-widest text-white/30 hover:text-white border border-white/10 hover:border-white/20 px-2 py-1 rounded transition-all"
+              >
+                [ EDIT_DOMAINS ]
+              </button>
+            )}
           </div>
 
           <div className="flex flex-wrap gap-x-8 gap-y-4 items-center">
@@ -337,9 +369,9 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-white/5 border border-white/5">
+        <div className="flex flex-wrap gap-px bg-white/5 border border-white/5 p-px">
           {processedCourses.map(course => (
-            <div key={course.id} className="bg-[#030303] p-1">
+            <div key={course.id} className="bg-[#030303] p-1 flex-[1_1_260px] min-w-[260px] max-w-full">
                <CourseCard 
                 course={course} 
                 onClick={setSelectedCourse} 
@@ -388,6 +420,28 @@ const App: React.FC = () => {
           onDelete={handleDeleteCourse}
           categories={categories.map(c => c.name)}
           editCourse={courseToEdit}
+        />
+      )}
+
+      {isDomainsModalOpen && isOwner && (
+        <DomainsModal
+          categories={categories}
+          onSave={(newCategories) => {
+            const renames = new Map<string, string>();
+            newCategories.forEach(nc => {
+              const old = categories.find(c => c.id === nc.id);
+              if (old && old.name !== nc.name) renames.set(old.name, nc.name);
+            });
+            if (renames.size > 0) {
+              setCourses(prev => prev.map(c => {
+                const newName = renames.get(c.category);
+                return newName ? { ...c, category: newName } : c;
+              }));
+            }
+            setCategories(newCategories);
+          }}
+          onClose={() => setIsDomainsModalOpen(false)}
+          courseCountByCategory={courseCountByCategory}
         />
       )}
     </div>
