@@ -97,7 +97,7 @@ const CourseDetail: React.FC<CourseDetailProps> = ({ course, onBack, onEdit, isO
               <a href={course.videoUrl} target="_blank" rel="noopener noreferrer" className="mono text-[10px] text-white/40 hover:text-white transition-colors uppercase tracking-widest border-b border-white/10">[ OPEN_DIRECTLY ]</a>
             </div>
 
-            <div className="space-y-8">
+            <div className="space-y-10">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
                 <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter leading-none max-w-2xl">{course.title}</h1>
                 <div className="text-right mono shrink-0">
@@ -111,7 +111,13 @@ const CourseDetail: React.FC<CourseDetailProps> = ({ course, onBack, onEdit, isO
                   <span key={s} className="px-3 py-1 bg-white/5 border border-white/5 rounded-full text-[10px] mono text-white/60">#{s.toUpperCase()}</span>
                 ))}
               </div>
-              <p className="text-lg text-white/50 font-light leading-relaxed max-w-3xl">{course.description}</p>
+
+              <section className="border-t border-white/10 pt-10">
+                <h2 className="mono text-[10px] text-white/30 tracking-[0.2em] uppercase mb-6">POST_CONTENT</h2>
+                <div className="prose prose-invert max-w-3xl">
+                  <p className="text-lg text-white/70 font-light leading-relaxed whitespace-pre-line">{course.description}</p>
+                </div>
+              </section>
             </div>
           </div>
 

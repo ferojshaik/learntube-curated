@@ -1,6 +1,23 @@
-
 import React from 'react';
 import { Course } from '../types';
+
+function getEmbedUrl(url: string): string {
+  if (!url) return '';
+  if (url.includes('youtube.com/embed/') || url.includes('youtube-nocookie.com/embed/')) return url;
+  let videoId = '';
+  try {
+    if (url.includes('v=')) videoId = url.split('v=')[1].split('&')[0];
+    else if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1].split('?')[0];
+    else if (url.includes('/shorts/')) videoId = url.split('/shorts/')[1].split('/')[0];
+    if (!videoId || videoId.length !== 11) {
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\/shorts\/)([^#\&\?]*).*/;
+      const match = url.match(regExp);
+      if (match?.[2]?.length === 11) videoId = match[2];
+    }
+  } catch {}
+  if (videoId?.length === 11) return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0`;
+  return '';
+}
 
 interface CourseCardProps {
   course: Course;
@@ -12,24 +29,37 @@ interface CourseCardProps {
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({ course, onClick, onEdit, isOwner, isBookmarked, onToggleBookmark }) => {
+  const embedUrl = getEmbedUrl(course.videoUrl);
+
   return (
     <div 
-      className="group relative h-[450px] bg-[#030303] cursor-pointer overflow-hidden transition-all duration-700 border border-white/5"
+      className="group relative h-[260px] bg-[#030303] cursor-pointer overflow-hidden transition-all duration-700 border border-white/5"
     >
       <div 
         onClick={() => onClick(course)}
-        className="absolute inset-0 transition-all duration-1000"
+        className="absolute inset-0 transition-all duration-1000 flex flex-col"
       >
-        <img 
-          src={course.thumbnailUrl} 
-          alt={course.title} 
-          className="w-full h-full object-cover opacity-60 group-hover:opacity-80 scale-100 group-hover:scale-105 transition-all duration-1000"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-[#030303]/40"></div>
+        <div className="flex-1 min-h-0 w-full relative bg-black">
+          {embedUrl ? (
+            <iframe
+              src={embedUrl}
+              title={course.title}
+              className="absolute inset-0 w-full h-full pointer-events-none"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              loading="lazy"
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center mono text-white/20 text-[10px] uppercase tracking-widest">
+              NO_VIDEO
+            </div>
+          )}
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-transparent pointer-events-none" aria-hidden />
       </div>
 
-      <div className="absolute top-6 left-6 right-6 flex justify-between items-start z-10">
-        <div className="mono text-[8px] text-white/40 tracking-[0.4em] uppercase pointer-events-none">REF_{course.id.slice(-4)}</div>
+      <div className="absolute top-3 left-3 right-3 flex justify-between items-start z-10">
+        <div className="mono text-[7px] text-white/40 tracking-[0.3em] uppercase pointer-events-none">REF_{course.id.slice(-4)}</div>
         <div className="flex gap-2">
            <button 
             onClick={(e) => { e.stopPropagation(); onToggleBookmark(); }}
@@ -46,7 +76,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick, onEdit, isOwne
       </div>
 
       {isOwner && (
-        <div className="absolute top-14 right-6 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300">
+        <div className="absolute top-10 right-3 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300">
           <button 
             onClick={(e) => { e.stopPropagation(); onEdit(course); }}
             className="bg-white/10 hover:bg-white text-white hover:text-black backdrop-blur-xl border border-white/20 p-2 rounded-full transition-all"
@@ -61,21 +91,17 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick, onEdit, isOwne
 
       <div 
         onClick={() => onClick(course)}
-        className="absolute bottom-8 left-8 right-8 space-y-4 z-10 transition-all duration-500"
+        className="absolute bottom-3 left-3 right-3 space-y-1 z-10 transition-all duration-500"
       >
         <div className="h-[1px] w-full bg-white/20 group-hover:bg-white transition-all duration-700"></div>
-        <h3 className="text-xl font-bold leading-tight text-white transition-colors">
+        <h3 className="text-sm font-bold leading-tight text-white transition-colors line-clamp-2">
           {course.title.toUpperCase()}
         </h3>
         <div className="flex justify-between items-center">
-          <p className="text-[10px] mono text-white/50 uppercase tracking-widest line-clamp-1">
+          <p className="text-[8px] mono text-white/50 uppercase tracking-widest line-clamp-1">
             VIA // {course.channelName}
           </p>
-          <div className="flex items-center gap-1">
-            <span className="mono text-[10px] text-white/60">
-              ★ {course.rating}
-            </span>
-          </div>
+          <span className="mono text-[8px] text-white/60">★ {course.rating}</span>
         </div>
       </div>
       
