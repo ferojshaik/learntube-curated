@@ -26,3 +26,10 @@ export interface Category {
   name: string;
   icon: string;
 }
+
+export interface Comment {
+  id: string;
+  author: string;
+  text: string;
+  date: string;
+}

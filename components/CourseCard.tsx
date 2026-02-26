@@ -1,6 +1,27 @@
 import React from 'react';
 import { Course } from '../types';
 
+const VOTES_STORAGE_KEY = 'learntube_video_votes';
+
+function getVideoVotes(courseId: string): { likes: number; dislikes: number } {
+  try {
+    const raw = localStorage.getItem(VOTES_STORAGE_KEY);
+    const all = raw ? JSON.parse(raw) : {};
+    const v = all[courseId];
+    return v && typeof v.likes === 'number' && typeof v.dislikes === 'number'
+      ? { likes: v.likes, dislikes: v.dislikes }
+      : { likes: 0, dislikes: 0 };
+  } catch {
+    return { likes: 0, dislikes: 0 };
+  }
+}
+
+function getEffectiveRating(baseRating: number, courseId: string): number {
+  const votes = getVideoVotes(courseId);
+  const total = votes.likes + votes.dislikes;
+  return total > 0 ? (votes.likes / total) * 5 : baseRating;
+}
+
 function getEmbedUrl(url: string): string {
   if (!url) return '';
   if (url.includes('youtube.com/embed/') || url.includes('youtube-nocookie.com/embed/')) return url;
@@ -30,6 +51,7 @@ interface CourseCardProps {
 
 const CourseCard: React.FC<CourseCardProps> = ({ course, onClick, onEdit, isOwner, isBookmarked, onToggleBookmark }) => {
   const embedUrl = getEmbedUrl(course.videoUrl);
+  const effectiveRating = getEffectiveRating(course.rating, course.id);
 
   return (
     <div 
@@ -101,7 +123,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick, onEdit, isOwne
           <p className="text-[8px] mono text-[#22d3ee] line-clamp-1">
             {course.channelName}
           </p>
-          <span className="mono text-[8px] text-[#f59e0b]">★ {course.rating}</span>
+          <span className="mono text-[8px] text-[#f59e0b]">★ {effectiveRating.toFixed(1)}</span>
         </div>
       </div>
     </div>
