@@ -33,7 +33,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick, onEdit, isOwne
 
   return (
     <div 
-      className="group relative h-[260px] bg-[#16161b] cursor-pointer overflow-hidden transition-all duration-300 border border-[#334155] hover:border-[#22d3ee50] hover:shadow-[0_0_20px_rgba(34,211,238,0.08)] rounded-lg"
+      className="group relative h-[260px] bg-[#16161b] cursor-pointer overflow-hidden transition-all duration-300 border border-black hover:border-black rounded-lg"
     >
       <div 
         onClick={() => onClick(course)}

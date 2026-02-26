@@ -68,7 +68,7 @@ const CourseDetail: React.FC<CourseDetailProps> = ({ course, onBack, onEdit, isO
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-8 space-y-8">
-            <div className="aspect-video bg-black overflow-hidden border border-[#334155] rounded-xl">
+            <div className="aspect-video bg-black overflow-hidden border border-black rounded-xl">
               {embedUrl ? (
                 <iframe 
                   key={key}

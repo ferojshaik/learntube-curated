@@ -345,11 +345,8 @@ const App: React.FC = () => {
         </div>
 
         <div className="flex flex-wrap gap-2 border border-[#334155] p-2 rounded-xl bg-[#16161b]/50">
-          {processedCourses.map((course, i) => {
-            const borderColors = ['#22d3ee', '#a78bfa', '#f59e0b', '#10b981', '#fb7185', '#38bdf8'];
-            const accent = borderColors[i % borderColors.length];
-            return (
-            <div key={course.id} className="p-1 flex-[1_1_260px] min-w-[260px] max-w-full rounded-lg border border-[#334155] hover:border-[#475569] transition-colors bg-[#16161b]" style={{ borderLeftWidth: '3px', borderLeftColor: accent }}>
+          {processedCourses.map((course) => (
+            <div key={course.id} className="p-1 flex-[1_1_260px] min-w-[260px] max-w-full rounded-lg border border-black transition-colors bg-[#16161b]">
               <CourseCard 
                 course={course} 
                 onClick={setSelectedCourse} 
@@ -359,8 +356,7 @@ const App: React.FC = () => {
                 onToggleBookmark={() => toggleBookmark(course.id)}
               />
             </div>
-            );
-          })}
+          ))}
         </div>
 
         {processedCourses.length === 0 && (
