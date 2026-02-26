@@ -62,29 +62,27 @@ const AdminModal: React.FC<AdminModalProps> = ({ onClose, onAdd, onDelete, categ
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/95 backdrop-blur-2xl">
-      <div className="bg-[#0a0a0a] border border-white/10 w-full max-w-2xl shadow-[0_0_100px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col max-h-[90vh] rounded-[2rem]">
-        
-        {/* Header */}
-        <div className="p-5 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/98">
+      <div className="bg-[#16161b] border border-[#22d3ee] w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh] rounded-xl shadow-[0_0_40px_rgba(34,211,238,0.08)]">
+        <div className="p-4 border-b border-[#334155] flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-2 h-2 bg-white"></div>
-            <h2 className="mono text-[10px] font-bold tracking-[0.3em] uppercase">
-              {showDeleteConfirm ? 'PURGE_PROTOCOL' : showConfirmation ? 'VERIFICATION_STEP' : editCourse ? 'MODIFY_ARCHIVE_DATA' : 'MANUAL_DATA_ENTRY'}
+            <span className="mono text-[10px] text-[#22d3ee]">$</span>
+            <h2 className="mono text-[10px] font-bold tracking-widest uppercase text-[#e2e8f0]">
+              {showDeleteConfirm ? 'PURGE' : showConfirmation ? 'VERIFY' : editCourse ? 'EDIT_NODE' : 'ADD_NODE'}
             </h2>
           </div>
           {!showConfirmation && !showDeleteConfirm && (
-            <div className="flex gap-4 items-center">
+            <div className="flex gap-2 items-center">
               {editCourse && onDelete && (
                 <button 
                   type="button"
                   onClick={() => setShowDeleteConfirm(true)} 
-                  className="text-[9px] mono text-red-500/60 hover:text-red-500 transition-colors uppercase tracking-widest mr-2"
+                  className="text-[9px] mono text-[#fb7185] hover:text-[#fda4af] transition-colors mr-2"
                 >
-                  [ DELETE_RECORD ]
+                  [ DELETE ]
                 </button>
               )}
-              <button onClick={onClose} className="hover:text-white text-white/30 transition-colors">
+              <button onClick={onClose} className="text-[#94a3b8] hover:text-[#22d3ee] transition-colors">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
               </button>
             </div>
@@ -97,9 +95,9 @@ const AdminModal: React.FC<AdminModalProps> = ({ onClose, onAdd, onDelete, categ
               <div className="w-16 h-16 border border-red-500/30 mx-auto flex items-center justify-center">
                 <div className="w-8 h-8 bg-red-500 animate-pulse"></div>
               </div>
-              <h3 className="text-2xl font-black tracking-tighter uppercase text-red-500 italic">Delete node forever?</h3>
+              <h3 className="mono text-2xl font-black tracking-tighter uppercase text-red-500">PURGE_NODE?</h3>
               <p className="mono text-[10px] text-white/40 tracking-[0.2em] max-w-xs mx-auto uppercase leading-loose">
-                Removing this record is a destructive action and cannot be undone.
+                DESTRUCTIVE_ACTION. CANNOT_BE_UNDONE.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4 w-full pt-4">
@@ -129,7 +127,7 @@ const AdminModal: React.FC<AdminModalProps> = ({ onClose, onAdd, onDelete, categ
                   setUrl(e.target.value);
                   setFormData(prev => ({ ...prev, videoUrl: e.target.value }));
                 }}
-                placeholder="https://www.youtube.com/watch?v=..."
+                placeholder=" https://youtube.com/watch?v=..."
                 className="w-full bg-white/5 border border-white/10 p-4 text-xs mono focus:border-white/50 outline-none transition-all rounded-xl"
               />
             </div>
@@ -227,7 +225,7 @@ const AdminModal: React.FC<AdminModalProps> = ({ onClose, onAdd, onDelete, categ
                   value={Array.isArray(formData.skills) ? formData.skills.join(', ') : (formData.skills as unknown as string)}
                   onChange={(e) => setFormData({...formData, skills: e.target.value.split(',').map(s => s.trim())})}
                   className="w-full bg-white/5 border border-white/10 p-4 text-xs mono focus:border-white/50 outline-none rounded-xl"
-                  placeholder="REACT, CSS, DEV..."
+                  placeholder=" tag1, tag2, tag3"
                 />
               </div>
             </div>
@@ -235,7 +233,7 @@ const AdminModal: React.FC<AdminModalProps> = ({ onClose, onAdd, onDelete, categ
             <div className="pt-4">
               <button 
                 type="submit"
-                className="w-full bg-white text-black py-5 text-xs mono font-black hover:bg-white/80 transition-all rounded-full uppercase tracking-[0.4em]"
+                className="w-full bg-gradient-to-r from-[#22d3ee] to-[#a78bfa] text-black py-5 text-xs mono font-black hover:opacity-90 transition-opacity rounded-xl uppercase tracking-[0.4em]"
               >
                 {editCourse ? '[ Update_Record ]' : '[ Commit_To_Archive ]'}
               </button>
@@ -247,16 +245,16 @@ const AdminModal: React.FC<AdminModalProps> = ({ onClose, onAdd, onDelete, categ
               <div className="w-16 h-16 border border-white mx-auto flex items-center justify-center">
                 <div className="w-8 h-8 bg-white animate-pulse"></div>
               </div>
-              <h3 className="text-2xl font-black italic tracking-tighter uppercase">Commit to archive?</h3>
+              <h3 className="mono text-2xl font-black tracking-tighter uppercase">COMMIT_TO_ARCHIVE?</h3>
               <p className="mono text-[10px] text-white/40 tracking-[0.2em] max-w-xs mx-auto uppercase leading-relaxed">
-                Commiting this node will make it visible to all users of the Knowledge Base.
+                NODE_WILL_BE_VISIBLE_TO_ALL_USERS.
               </p>
             </div>
 
             <div className="w-full p-8 border border-white/5 bg-white/[0.01] rounded-3xl text-left space-y-4">
               <div>
                 <span className="mono text-[8px] text-white/20 block uppercase tracking-widest mb-1">RECORD_TITLE</span>
-                <span className="font-bold text-xl uppercase tracking-tighter">{formData.title}</span>
+                <span className="mono font-bold text-xl uppercase tracking-tighter">{formData.title}</span>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -279,7 +277,7 @@ const AdminModal: React.FC<AdminModalProps> = ({ onClose, onAdd, onDelete, categ
               </button>
               <button 
                 onClick={handleFinalConfirm}
-                className="mono text-[10px] py-4 bg-white text-black font-black hover:bg-white/90 transition-all uppercase tracking-widest rounded-xl shadow-[0_10px_40px_rgba(255,255,255,0.1)]"
+                className="mono text-[10px] py-4 bg-gradient-to-r from-[#22d3ee] to-[#a78bfa] text-black font-black hover:opacity-90 transition-opacity uppercase tracking-widest rounded-xl shadow-[0_10px_40px_rgba(34,211,238,0.2)]"
               >
                 [ COMMIT_NOW ]
               </button>

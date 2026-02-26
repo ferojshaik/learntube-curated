@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface NavbarProps {
@@ -11,52 +10,46 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ searchValue, onSearchChange, onAdminToggle, isOwner, onOwnerLogout }) => {
   return (
-    <nav className="fixed top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 glass-panel rounded-full px-6 py-3 flex items-center justify-between border border-white/10">
-      <div className="flex items-center gap-6">
-        <div className="flex items-center gap-2 group cursor-pointer" onClick={() => window.location.hash = ''}>
-          <div className="w-8 h-8 bg-white text-black flex items-center justify-center font-black text-lg skew-x-[-12deg] group-hover:bg-white/90 transition-colors">
-            L
-          </div>
-          <span className="mono text-sm tracking-tighter font-bold hidden sm:block">KNOWLEDGE_BASE // v2.0.4</span>
-        </div>
+    <nav className="fixed top-0 left-0 right-0 z-50 glass-panel px-4 py-2.5 flex items-center justify-between border-b border-[#22d3ee30] rounded-none">
+      <div className="flex items-center gap-3">
+        <button type="button" onClick={() => window.location.hash = ''} className="mono text-[11px] font-bold tracking-tight flex items-center gap-2 group">
+          <span className="text-[#94a3b8] group-hover:text-[#22d3ee] transition-colors">user@knowledge-base:~</span>
+          <span className="text-[#22d3ee]">$</span>
+        </button>
       </div>
 
-      <div className="flex-grow max-w-md mx-8 relative min-w-0">
+      <div className="flex-grow max-w-md mx-6 relative min-w-0 flex items-center">
+        <span className="mono text-[#38bdf8] text-xs absolute left-3 pointer-events-none">$</span>
         <input 
           type="text" 
           value={searchValue}
           onChange={(e) => onSearchChange(e.target.value)}
-          placeholder="QUERY_SYSTEM..."
-          className="w-full bg-white/5 border border-white/10 rounded-full py-2 pl-10 pr-4 text-xs mono focus:border-white/50 outline-none transition-all placeholder:text-white/20"
+          placeholder=" grep ..."
+          className="w-full bg-[#16161b]/80 border border-[#22d3ee30] py-2 pl-7 pr-3 text-xs mono text-[#e2e8f0] focus:border-[#22d3ee] focus:ring-1 focus:ring-[#22d3ee40] outline-none transition-all placeholder:text-[#64748b] rounded-md"
           aria-label="Search courses"
         />
-        <svg className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-        </svg>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
         {isOwner && (
           <>
             <button 
               onClick={onAdminToggle}
-              className="hidden sm:block text-[10px] mono tracking-widest text-white/50 hover:text-white transition-colors"
+              className="hidden sm:block mono text-[10px] tracking-widest text-[#10b981] hover:text-[#34d399] transition-colors"
             >
               [ ADD_CONTENT ]
             </button>
             {onOwnerLogout && (
               <button 
                 onClick={onOwnerLogout}
-                className="hidden sm:block text-[10px] mono tracking-widest text-white/30 hover:text-white/60 transition-colors"
+                className="hidden sm:block mono text-[10px] tracking-widest text-[#94a3b8] hover:text-[#fb7185] transition-colors"
               >
                 [ EXIT_OWNER ]
               </button>
             )}
           </>
         )}
-        <div className="w-8 h-8 rounded-full border border-white/20 overflow-hidden cursor-pointer hover:border-white transition-all">
-          <img src="https://picsum.photos/100/100?grayscale" alt="User" />
-        </div>
+        <span className="mono text-[9px] text-[#64748b] hidden sm:inline">tty1</span>
       </div>
     </nav>
   );

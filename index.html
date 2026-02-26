@@ -6,54 +6,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEURAL_ARCHIVE // BEYOND_LEARNING</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #030303;
-            --accent: #ffffff;
-            --subtle: rgba(255, 255, 255, 0.08);
-            --neon: #00f2ff;
+            --bg: #0f0f12;
+            --bg-card: #16161b;
+            --cyan: #22d3ee;
+            --green: #10b981;
+            --amber: #f59e0b;
+            --violet: #a78bfa;
+            --rose: #fb7185;
+            --blue: #38bdf8;
+            --muted: #94a3b8;
+            --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', monospace;
         }
+        *, *::before, *::after { font-family: var(--font-mono); }
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: white;
+            font-family: var(--font-mono);
+            background: var(--bg);
+            color: #e2e8f0;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
+            min-height: 100vh;
         }
-        .mono { font-family: 'JetBrains Mono', monospace; }
-        
-        /* The "Jobs" Grain Texture */
+        input, button, select, textarea, optgroup, option { font-family: inherit; }
         body::before {
             content: "";
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url("https://grainy-gradients.vercel.app/noise.svg");
-            opacity: 0.04;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse 80% 50% at 20% 0%, rgba(34, 211, 238, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 100%, rgba(167, 139, 250, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 30% at 50% 50%, rgba(16, 185, 129, 0.03) 0%, transparent 60%);
             pointer-events: none;
-            z-index: 1000;
+            z-index: 0;
         }
+        #root { position: relative; z-index: 1; }
+        .mono { font-family: var(--font-mono); }
 
         .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            background: rgba(22, 22, 27, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
         }
 
-        .synapse-glow {
-            filter: drop-shadow(0 0 8px rgba(0, 242, 255, 0.4));
+        .text-gradient {
+            background: linear-gradient(135deg, #22d3ee 0%, #a78bfa 50%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        @keyframes pulse-slow {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.6; }
-        }
-        .animate-pulse-slow { animation: pulse-slow 4s infinite; }
-
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--subtle); border-radius: 10px; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #16161b; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #22d3ee40, #a78bfa40); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #22d3ee60, #a78bfa60); }
     </style>
 <script type="importmap">
 {
@@ -67,7 +75,7 @@
 </script>
 <link rel="stylesheet" href="/index.css">
 </head>
-<body class="selection:bg-white selection:text-black">
+<body class="selection:bg-[#22d3ee] selection:text-[#0f0f12]">
     <div id="root"></div>
 <script type="module" src="/index.tsx"></script>
 </body>

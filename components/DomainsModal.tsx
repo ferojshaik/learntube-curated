@@ -54,14 +54,14 @@ const DomainsModal: React.FC<DomainsModalProps> = ({ categories, onSave, onClose
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/95 backdrop-blur-2xl">
-      <div className="bg-[#0a0a0a] border border-white/10 w-full max-w-lg shadow-[0_0_100px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col max-h-[90vh] rounded-[2rem]">
-        <div className="p-5 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/98">
+      <div className="bg-[#16161b] border border-[#22d3ee] w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh] rounded-xl shadow-[0_0_40px_rgba(34,211,238,0.08)]">
+        <div className="p-4 border-b border-[#334155] flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-2 h-2 bg-white"></div>
-            <h2 className="mono text-[10px] font-bold tracking-[0.3em] uppercase">EDIT_DOMAINS</h2>
+            <span className="mono text-[10px] text-[#22d3ee]">$</span>
+            <h2 className="mono text-[10px] font-bold tracking-widest uppercase text-[#e2e8f0]">EDIT_DOMAINS</h2>
           </div>
-          <button onClick={onClose} className="hover:text-white text-white/30 transition-colors">
+          <button onClick={onClose} className="text-[#94a3b8] hover:text-[#22d3ee] transition-colors">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
           </button>
         </div>
@@ -74,11 +74,11 @@ const DomainsModal: React.FC<DomainsModalProps> = ({ categories, onSave, onClose
                 type="text"
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
-                placeholder="Domain name..."
+                placeholder=" enter_domain_name"
                 className="flex-1 bg-white/5 border border-white/10 p-3 text-sm mono focus:border-white/50 outline-none rounded-xl placeholder:text-white/20"
               />
-              <button type="button" onClick={handleAdd} className="mono text-[10px] px-4 py-2 bg-white text-black font-black rounded-xl hover:bg-white/90">
-                ADD
+              <button type="button" onClick={handleAdd} className="mono text-[10px] px-4 py-2 bg-gradient-to-r from-[#22d3ee] to-[#38bdf8] text-black font-black rounded-xl hover:opacity-90 transition-opacity">
+                [ ADD ]
               </button>
             </div>
           </div>
@@ -100,14 +100,14 @@ const DomainsModal: React.FC<DomainsModalProps> = ({ categories, onSave, onClose
                         autoFocus
                         className="flex-1 bg-white/5 border border-white/20 p-2 text-xs mono outline-none rounded"
                       />
-                      <button type="button" onClick={saveEdit} className="mono text-[9px] text-white/60 hover:text-white">DONE</button>
+                      <button type="button" onClick={saveEdit} className="mono text-[9px] text-white/60 hover:text-white">[ DONE ]</button>
                     </>
                   ) : (
                     <>
                       <span className="flex-1 mono text-[11px] text-white/90">{cat.name}</span>
-                      <span className="mono text-[8px] text-white/30">{courseCountByCategory(cat.name)} courses</span>
-                      <button type="button" onClick={() => startEdit(cat)} className="mono text-[9px] text-white/40 hover:text-white">EDIT</button>
-                      <button type="button" onClick={() => remove(cat)} className="mono text-[9px] text-red-500/70 hover:text-red-500">REMOVE</button>
+                      <span className="mono text-[8px] text-white/30">{courseCountByCategory(cat.name)} NODES</span>
+                      <button type="button" onClick={() => startEdit(cat)} className="mono text-[9px] text-white/40 hover:text-white">[ EDIT ]</button>
+                      <button type="button" onClick={() => remove(cat)} className="mono text-[9px] text-red-500/70 hover:text-red-500">[ REMOVE ]</button>
                     </>
                   )}
                 </li>
@@ -117,10 +117,10 @@ const DomainsModal: React.FC<DomainsModalProps> = ({ categories, onSave, onClose
 
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={onClose} className="flex-1 mono text-[10px] py-3 border border-white/10 hover:bg-white/5 transition-all uppercase tracking-widest rounded-xl">
-              CANCEL
+              [ CANCEL ]
             </button>
-            <button type="submit" className="flex-1 mono text-[10px] py-3 bg-white text-black font-black hover:bg-white/90 transition-all uppercase tracking-widest rounded-xl">
-              SAVE_DOMAINS
+            <button type="submit" className="flex-1 mono text-[10px] py-3 bg-gradient-to-r from-[#22d3ee] to-[#a78bfa] text-black font-black hover:opacity-90 transition-opacity uppercase tracking-widest rounded-xl">
+              [ SAVE_DOMAINS ]
             </button>
           </div>
         </form>

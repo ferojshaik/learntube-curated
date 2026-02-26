@@ -33,11 +33,11 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick, onEdit, isOwne
 
   return (
     <div 
-      className="group relative h-[260px] bg-[#030303] cursor-pointer overflow-hidden transition-all duration-700 border border-white/5"
+      className="group relative h-[260px] bg-[#16161b] cursor-pointer overflow-hidden transition-all duration-300 border border-[#334155] hover:border-[#22d3ee50] hover:shadow-[0_0_20px_rgba(34,211,238,0.08)] rounded-lg"
     >
       <div 
         onClick={() => onClick(course)}
-        className="absolute inset-0 transition-all duration-1000 flex flex-col"
+        className="absolute inset-0 flex flex-col"
       >
         <div className="flex-1 min-h-0 w-full relative bg-black">
           {embedUrl ? (
@@ -50,37 +50,37 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick, onEdit, isOwne
               loading="lazy"
             />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center mono text-white/20 text-[10px] uppercase tracking-widest">
+            <div className="absolute inset-0 flex items-center justify-center mono text-[#64748b] text-[10px] uppercase tracking-widest">
               NO_VIDEO
             </div>
           )}
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-transparent pointer-events-none" aria-hidden />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#16161b] via-transparent to-transparent pointer-events-none" aria-hidden />
       </div>
 
-      <div className="absolute top-3 left-3 right-3 flex justify-between items-start z-10">
-        <div className="mono text-[7px] text-white/40 tracking-[0.3em] uppercase pointer-events-none">REF_{course.id.slice(-4)}</div>
+      <div className="absolute top-2 left-2 right-2 flex justify-between items-start z-10">
+        <span className="mono text-[7px] text-[#64748b] tracking-wider pointer-events-none">ref_{course.id.slice(-4)}</span>
         <div className="flex gap-2">
            <button 
             onClick={(e) => { e.stopPropagation(); onToggleBookmark(); }}
-            className={`backdrop-blur-md px-2 py-0.5 rounded-full border transition-all ${isBookmarked ? 'bg-white text-black border-white' : 'bg-white/10 text-white/80 border-white/10 hover:border-white/40'}`}
+            className={`px-2 py-0.5 rounded-md border text-[10px] mono transition-colors ${isBookmarked ? 'bg-[#10b981] text-white border-[#10b981]' : 'border-[#334155] text-[#94a3b8] hover:border-[#10b98150] hover:text-[#10b981]'}`}
           >
             <svg className="w-3 h-3" fill={isBookmarked ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
             </svg>
           </button>
-          <div className="bg-white/10 backdrop-blur-md px-2 py-0.5 rounded text-[8px] mono text-white/80 border border-white/10 pointer-events-none">
+          <span className="bg-[#a78bfa15] px-2 py-0.5 rounded-md text-[8px] mono text-[#a78bfa] border border-[#a78bfa30] pointer-events-none">
             {course.difficulty.toUpperCase()}
-          </div>
+          </span>
         </div>
       </div>
 
       {isOwner && (
-        <div className="absolute top-10 right-3 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300">
+        <div className="absolute top-9 right-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           <button 
             onClick={(e) => { e.stopPropagation(); onEdit(course); }}
-            className="bg-white/10 hover:bg-white text-white hover:text-black backdrop-blur-xl border border-white/20 p-2 rounded-full transition-all"
-            title="Edit Node"
+            className="bg-[#16161b] hover:bg-[#22d3ee] text-[#94a3b8] hover:text-black border border-[#334155] hover:border-[#22d3ee] p-1.5 rounded-md transition-colors mono text-[9px]"
+            title="EDIT_NODE"
           >
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -91,22 +91,19 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick, onEdit, isOwne
 
       <div 
         onClick={() => onClick(course)}
-        className="absolute bottom-3 left-3 right-3 space-y-1 z-10 transition-all duration-500"
+        className="absolute bottom-2 left-2 right-2 space-y-0.5 z-10"
       >
-        <div className="h-[1px] w-full bg-white/20 group-hover:bg-white transition-all duration-700"></div>
-        <h3 className="text-sm font-bold leading-tight text-white transition-colors line-clamp-2">
-          {course.title.toUpperCase()}
+        <div className="h-px w-full bg-gradient-to-r from-[#22d3ee30] via-[#a78bfa30] to-transparent"></div>
+        <h3 className="text-xs font-bold leading-tight text-[#e2e8f0] mono line-clamp-2 group-hover:text-white transition-colors">
+          {course.title}
         </h3>
         <div className="flex justify-between items-center">
-          <p className="text-[8px] mono text-white/50 uppercase tracking-widest line-clamp-1">
-            VIA // {course.channelName}
+          <p className="text-[8px] mono text-[#22d3ee] line-clamp-1">
+            {course.channelName}
           </p>
-          <span className="mono text-[8px] text-white/60">★ {course.rating}</span>
+          <span className="mono text-[8px] text-[#f59e0b]">★ {course.rating}</span>
         </div>
       </div>
-      
-      <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-white/10 opacity-100 transition-all pointer-events-none"></div>
-      <div className="absolute bottom-0 left-0 w-8 h-8 border-b border-l border-white/10 opacity-100 transition-all pointer-events-none"></div>
     </div>
   );
 };

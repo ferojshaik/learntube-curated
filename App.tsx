@@ -137,7 +137,7 @@ const App: React.FC = () => {
         setShowOwnerLogin(false);
         setOwnerPasswordInput('');
       } else {
-        setOwnerLoginError('Invalid access code.');
+        setOwnerLoginError('INVALID_ACCESS_CODE');
         if (result.debug) setOwnerLoginDebug(result.debug);
       }
     } finally {
@@ -226,47 +226,47 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[#0f0f12]">
       {showOwnerLogin && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-black/95 backdrop-blur-2xl">
-          <div className="bg-[#0a0a0a] border border-white/10 w-full max-w-md shadow-[0_0_100px_rgba(0,0,0,0.5)] rounded-[2rem] overflow-hidden p-8">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-[#0f0f12]/98">
+          <div className="bg-[#16161b] border border-[#22d3ee50] w-full max-w-md rounded-xl overflow-hidden p-8 shadow-[0_0_40px_rgba(34,211,238,0.1)]">
             <div className="space-y-2 mb-6">
-              <div className="w-2 h-2 bg-white"></div>
-              <h2 className="mono text-[10px] font-bold tracking-[0.3em] uppercase">OWNER_ACCESS</h2>
+              <span className="mono text-[10px] text-[#38bdf8]">$ sudo access</span>
+              <h2 className="mono text-[11px] font-bold tracking-widest uppercase text-gradient">OWNER_ACCESS</h2>
             </div>
             <form onSubmit={handleOwnerLogin} className="space-y-4">
               <div>
-                <label className="mono text-[9px] text-white/30 block uppercase tracking-widest mb-2">ACCESS_CODE</label>
+                <label className="mono text-[9px] text-[#94a3b8] block uppercase tracking-widest mb-2">PASSWORD:</label>
                 <input
                   type="password"
                   value={ownerPasswordInput}
                   onChange={(e) => { setOwnerPasswordInput(e.target.value); setOwnerLoginError(''); }}
-                  placeholder="Enter password"
+                  placeholder=""
                   autoFocus
-                  className="w-full bg-white/5 border border-white/10 p-4 text-sm mono focus:border-white/50 outline-none transition-all rounded-xl placeholder:text-white/20"
+                  className="w-full bg-[#0f0f12] border border-[#334155] p-3 text-sm mono text-[#e2e8f0] focus:border-[#22d3ee] focus:ring-1 focus:ring-[#22d3ee40] outline-none rounded-md placeholder:text-[#64748b]"
                 />
               </div>
               {ownerLoginError && (
-                <p className="mono text-[9px] text-red-500 uppercase tracking-wider">{ownerLoginError}</p>
+                <p className="mono text-[9px] text-[#fb7185]">{ownerLoginError}</p>
               )}
               {ownerLoginDebug && (
-                <p className="mono text-[8px] text-white/40 break-all border border-white/10 rounded p-2 bg-black/30">
+                <p className="mono text-[8px] text-[#94a3b8] break-all border border-[#334155] rounded-md p-2 bg-[#0f0f12]">
                   DEBUG: {ownerLoginDebug}
                 </p>
               )}
-              <div className="flex gap-3 pt-2">
+              <div className="flex gap-2 pt-2">
                 <button
                   type="button"
                   disabled={ownerLoginLoading}
                   onClick={() => { window.location.hash = ''; setShowOwnerLogin(false); }}
-                  className="flex-1 mono text-[10px] py-3 border border-white/10 hover:bg-white/5 transition-all uppercase tracking-widest rounded-xl disabled:opacity-50"
+                  className="flex-1 mono text-[10px] py-2 border border-[#334155] text-[#94a3b8] hover:border-[#64748b] hover:text-[#e2e8f0] transition-colors rounded-md disabled:opacity-50"
                 >
                   [ CANCEL ]
                 </button>
                 <button
                   type="submit"
                   disabled={ownerLoginLoading}
-                  className="flex-1 mono text-[10px] py-3 bg-white text-black font-black hover:bg-white/90 transition-all uppercase tracking-widest rounded-xl disabled:opacity-50"
+                  className="flex-1 mono text-[10px] py-2 bg-gradient-to-r from-[#22d3ee] to-[#a78bfa] text-black font-bold hover:opacity-90 transition-opacity rounded-md disabled:opacity-50"
                 >
                   {ownerLoginLoading ? '[ VERIFYING... ]' : '[ UNLOCK ]'}
                 </button>
@@ -278,101 +278,79 @@ const App: React.FC = () => {
 
       <Navbar searchValue={searchInput} onSearchChange={setSearchInput} onAdminToggle={() => { setCourseToEdit(null); setIsAdminOpen(true); }} isOwner={isOwner} onOwnerLogout={handleOwnerLogout} />
 
-      <main className="max-w-7xl mx-auto px-6 pt-40 pb-32">
-        <div className="mb-24 flex flex-col md:flex-row justify-between items-start gap-12">
-          <div className="space-y-4 flex-grow">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-[1px] bg-white"></div>
-              <span className="mono text-[10px] text-white font-bold tracking-[0.4em]">SYSTEM_ARCHIVE_v1.0</span>
-            </div>
-            <h1 className="text-6xl md:text-8xl font-extrabold tracking-tighter leading-[0.9] max-w-4xl uppercase">
-              Curated <span className="text-white/20 italic">Mastery</span> Nodes.
-            </h1>
-            <p className="mono text-[11px] text-white/30 uppercase tracking-[0.2em] max-w-xl">
-              A high-precision vault for digital knowledge. Hand-selected education for builders, hackers, and creators.
-            </p>
-          </div>
-
-          <div className="w-full md:w-80 p-8 glass-panel border border-white/10 rounded-[2rem] space-y-6">
-            <div className="space-y-2">
-              <div className="w-2 h-2 bg-white animate-pulse"></div>
-              <h3 className="mono text-[10px] font-bold tracking-widest uppercase">System_Overview</h3>
-            </div>
-            <p className="mono text-[9px] text-white/40 leading-relaxed uppercase">
-              Current index contains {courses.length} verified learning paths across {categories.length} specialized domains.
-            </p>
-            <div className="h-px w-full bg-white/10"></div>
-            <div className="flex justify-between items-center mono text-[8px] text-white/20 uppercase tracking-widest">
-              <span>Status</span>
-              <span className="text-white">Active</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="mb-16 space-y-8 border-b border-white/5 pb-8">
-          <div className="flex flex-wrap gap-x-12 gap-y-6 items-center">
-            <div className="mono text-[10px] text-white/20 tracking-widest">DOMAIN_FILTER:</div>
+      <main className="max-w-7xl mx-auto px-6 pt-24 pb-28 text-[#e2e8f0]">
+        <div className="mb-12 space-y-6 border-b border-[#334155] pb-6">
+          <div className="flex flex-wrap gap-x-10 gap-y-4 items-center">
+            <span className="mono text-[10px] text-[#64748b] tracking-widest">DOMAIN_FILTER:</span>
             <button 
               onClick={() => { setSelectedCategory(null); setShowArchived(false); }}
-              className={`mono text-[11px] tracking-widest transition-all ${!selectedCategory && !showArchived ? 'text-white border-b border-white' : 'text-white/40 hover:text-white'}`}
+              className={`mono text-[11px] tracking-widest transition-colors ${!selectedCategory && !showArchived ? 'text-[#22d3ee] border-b-2 border-[#22d3ee]' : 'text-[#94a3b8] hover:text-[#22d3ee]'}`}
             >
               [ GLOBAL ]
             </button>
             <button 
               onClick={() => { setSelectedCategory(null); setShowArchived(true); }}
-              className={`mono text-[11px] tracking-widest transition-all ${showArchived ? 'text-white border-b border-white' : 'text-white/40 hover:text-white'}`}
+              className={`mono text-[11px] tracking-widest transition-colors ${showArchived ? 'text-[#a78bfa] border-b-2 border-[#a78bfa]' : 'text-[#94a3b8] hover:text-[#a78bfa]'}`}
             >
               [ PERSONAL_ARCHIVE ]
             </button>
-            {categories.map(cat => (
-              <button 
-                key={cat.id}
-                onClick={() => { setSelectedCategory(cat.name); setShowArchived(false); }}
-                className={`mono text-[11px] tracking-widest transition-all ${selectedCategory === cat.name ? 'text-white border-b border-white' : 'text-white/40 hover:text-white'}`}
-              >
-                [ {cat.name.toUpperCase()} ]
-              </button>
-            ))}
+            {categories.map((cat, i) => {
+              const colors = ['#f59e0b', '#22d3ee', '#a78bfa', '#10b981', '#fb7185', '#38bdf8'];
+              const c = colors[i % colors.length];
+              const active = selectedCategory === cat.name;
+              return (
+                <button 
+                  key={cat.id}
+                  onClick={() => { setSelectedCategory(cat.name); setShowArchived(false); }}
+                  className={`mono text-[11px] tracking-widest transition-colors ${active ? 'border-b-2' : ''}`}
+                  style={active ? { color: c, borderColor: c } : { color: '#94a3b8' }}
+                  onMouseEnter={(e) => { if (!active) { e.currentTarget.style.color = c; } }}
+                  onMouseLeave={(e) => { if (!active) { e.currentTarget.style.color = '#94a3b8'; } }}
+                >
+                  [ {cat.name.toUpperCase()} ]
+                </button>
+              );
+            })}
             {isOwner && (
               <button
                 onClick={() => setIsDomainsModalOpen(true)}
-                className="mono text-[11px] tracking-widest text-white/30 hover:text-white border border-white/10 hover:border-white/20 px-2 py-1 rounded transition-all"
+                className="mono text-[11px] tracking-widest text-[#64748b] hover:text-[#f59e0b] border border-[#334155] hover:border-[#f59e0b50] px-2 py-1 rounded-md transition-colors"
               >
                 [ EDIT_DOMAINS ]
               </button>
             )}
           </div>
 
-          <div className="flex flex-wrap gap-x-8 gap-y-4 items-center">
-            <div className="mono text-[10px] text-white/20 tracking-widest uppercase">Sort_Parameters:</div>
-            <div className="flex gap-4">
+          <div className="flex flex-wrap gap-x-6 gap-y-3 items-center">
+            <span className="mono text-[10px] text-[#64748b] tracking-widest uppercase">SORT:</span>
+            <div className="flex gap-2">
               {(['date', 'rating', 'title'] as SortOption[]).map((option) => (
                 <button
                   key={option}
                   onClick={() => setSortBy(option)}
-                  className={`mono text-[10px] px-3 py-1 rounded border transition-all ${
+                  className={`mono text-[10px] px-3 py-1.5 rounded-md border transition-colors ${
                     sortBy === option 
-                      ? 'border-white text-white bg-white/5' 
-                      : 'border-white/5 text-white/30 hover:border-white/20 hover:text-white'
+                      ? 'border-[#a78bfa] text-[#a78bfa] bg-[#a78bfa15]' 
+                      : 'border-[#334155] text-[#94a3b8] hover:border-[#a78bfa50] hover:text-[#a78bfa]'
                   }`}
                 >
                   {option === 'date' ? 'NEWEST_FIRST' : option.toUpperCase()}
                 </button>
               ))}
             </div>
-            
-            <div className="ml-auto hidden md:block">
-              <span className="mono text-[10px] text-white/10 uppercase tracking-tighter">
-                TOTAL_RECORDS // {processedCourses.length}
-              </span>
-            </div>
+            <span className="ml-auto mono text-[10px] text-[#64748b]">
+              TOTAL_RECORDS // <span className="text-[#22d3ee]">{processedCourses.length}</span>
+            </span>
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-px bg-white/5 border border-white/5 p-px">
-          {processedCourses.map(course => (
-            <div key={course.id} className="bg-[#030303] p-1 flex-[1_1_260px] min-w-[260px] max-w-full">
-               <CourseCard 
+        <div className="flex flex-wrap gap-2 border border-[#334155] p-2 rounded-xl bg-[#16161b]/50">
+          {processedCourses.map((course, i) => {
+            const borderColors = ['#22d3ee', '#a78bfa', '#f59e0b', '#10b981', '#fb7185', '#38bdf8'];
+            const accent = borderColors[i % borderColors.length];
+            return (
+            <div key={course.id} className="p-1 flex-[1_1_260px] min-w-[260px] max-w-full rounded-lg border border-[#334155] hover:border-[#475569] transition-colors bg-[#16161b]" style={{ borderLeftWidth: '3px', borderLeftColor: accent }}>
+              <CourseCard 
                 course={course} 
                 onClick={setSelectedCourse} 
                 onEdit={handleEditClick} 
@@ -381,35 +359,27 @@ const App: React.FC = () => {
                 onToggleBookmark={() => toggleBookmark(course.id)}
               />
             </div>
-          ))}
+            );
+          })}
         </div>
 
         {processedCourses.length === 0 && (
-          <div className="py-40 text-center border border-white/5 bg-white/[0.01]">
-            <span className="mono text-[10px] text-white/20">NO_MATCHING_DATA_FOUND</span>
+          <div className="py-32 text-center border border-[#334155] rounded-xl bg-[#16161b]/50">
+            <span className="mono text-[10px] text-[#64748b]">$ echo "</span><span className="text-[#fb7185]">NO_MATCHING_DATA_FOUND</span><span className="text-[#64748b]">"</span>
           </div>
         )}
       </main>
 
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 glass-panel px-6 py-3 rounded-full flex items-center gap-8 z-50">
-        <div className="flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></div>
-          <span className="mono text-[9px] text-white/40 uppercase tracking-widest">NETWORK_STABLE</span>
-        </div>
-        <div className="h-4 w-[1px] bg-white/10"></div>
-        <div className="mono text-[9px] text-white/40 uppercase tracking-widest">
-          {bookmarks.length} STORED_NODES
-        </div>
+      <div className="fixed bottom-0 left-0 right-0 glass-panel px-4 py-2.5 flex items-center gap-6 z-50 border-t border-[#334155] rounded-none">
+        <span className="mono text-[9px] text-[#64748b]">root@kb:~#</span>
+        <span className="mono text-[9px] text-[#94a3b8] uppercase"><span className="text-[#10b981]">{bookmarks.length}</span> BOOKMARKS</span>
         {isOwner && (
-          <>
-            <div className="h-4 w-[1px] bg-white/10"></div>
-            <button 
-              onClick={() => { setCourseToEdit(null); setIsAdminOpen(true); }}
-              className="mono text-[9px] text-white font-bold hover:tracking-[0.2em] transition-all"
-            >
-              [ + ADD_NEW_NODE ]
-            </button>
-          </>
+          <button 
+            onClick={() => { setCourseToEdit(null); setIsAdminOpen(true); }}
+            className="mono text-[9px] text-[#22d3ee] font-bold hover:text-[#38bdf8] transition-colors"
+          >
+            [ + ADD_NEW_NODE ]
+          </button>
         )}
       </div>
 
